@@ -10,6 +10,26 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TodoController extends Controller
 {
+  /**
+     * @OA\Get(
+     *      path="/todos",
+     *      operationId="getTodosList",
+     *      tags={"할 일 관련"},
+     *      summary="모든 할 일 목록 가져오기",
+     *      description="모든 할 일 목록을 가져온다.",
+     *      @OA\Response(
+     *          response=200,
+     *          description="응답 성공"
+     *       ),
+     *       @OA\Response(response=400, description="Bad request"),
+     *       security={
+     *           {"api_key_security_example": {}}
+     *       }
+     *     )
+     *
+     * Returns list of projects
+     */
+
     /**
      * Display a listing of the resource.
      *
@@ -37,6 +57,32 @@ class TodoController extends Controller
     //}
 
     /**
+     * @OA\Post(
+     *      path="/todos",
+     *      operationId="storeTodo",
+     *      tags={"할 일 관련"},
+     *      summary="할 일 추가하기",
+     *      description="할 일을 추가하고 추가된 할 일을 반환한다.",
+     *     @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(ref="#/components/schemas/TodoRequest")
+     *      ),
+     *
+     *      @OA\Response(
+     *          response=201,
+     *          description="응답 성공 새 할 일 만들어짐",
+     *          @OA\JsonContent(ref="#/components/schemas/Todo")
+     *       ),
+     *       @OA\Response(response=400, description="Bad request"),
+     *       security={
+     *           {"api_key_security_example": {}}
+     *       }
+     *     )
+     *
+     * Returns list of projects
+     */
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -49,6 +95,37 @@ class TodoController extends Controller
         $newTodo = Todo::create($userInputData);
         return new TodoResource($newTodo);
     }
+
+    /**
+     * @OA\Get(
+     *      path="/todos/{id}",
+     *      operationId="getTodoById",
+     *      tags={"할 일 관련"},
+     *      summary="특정 할 일 가져오기",
+     *      description="특정 할 일 아이템을 가져온다.",
+     *     @OA\Parameter(
+     *          name="id",
+     *          description="Todo_id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *
+     *      @OA\Response(
+     *          response=200,
+     *          description="응답 성공",
+     *          @OA\JsonContent(ref="#/components/schemas/Todo")
+     *       ),
+     *       @OA\Response(response=400, description="Bad request"),
+     *       security={
+     *           {"api_key_security_example": {}}
+     *       }
+     *     )
+     *
+     * Returns list of projects
+     */
 
     /**
      * Display the specified resource.
@@ -80,6 +157,43 @@ class TodoController extends Controller
     //}
 
     /**
+     * @OA\Put(
+     *      path="/todos/{id}",
+     *      operationId="updateTodo",
+     *      tags={"할 일 관련"},
+     *      summary="기존 할 일 수정하기",
+     *      description="기존 할 일을 수정하고 수정된 할 일을 반환한다.",
+     *
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="Todo_id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *
+     *     @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(ref="#/components/schemas/TodoRequest")
+     *      ),
+     *
+     *      @OA\Response(
+     *          response=200,
+     *          description="응답 성공",
+     *          @OA\JsonContent(ref="#/components/schemas/Todo")
+     *       ),
+     *       @OA\Response(response=400, description="Bad request"),
+     *       security={
+     *           {"api_key_security_example": {}}
+     *       }
+     *     )
+     *
+     * Returns list of projects
+     */
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -97,6 +211,38 @@ class TodoController extends Controller
         $updateTodos = new TodoResource($id);
         return $updateTodos;
     }
+
+    /**
+    * @OA\Delete(
+    *      path="/todos/{id}",
+    *      operationId="deleteTodo",
+    *      tags={"할 일 관련"},
+    *      summary="기존 할 일 삭제하기",
+    *      description="기존 할 일을 삭제한다.",
+    *
+    *      @OA\Parameter(
+    *          name="id",
+    *          description="Todo_id",
+    *          required=true,
+    *          in="path",
+    *          @OA\Schema(
+    *              type="integer"
+    *          )
+    *      ),
+    *
+    *      @OA\Response(
+    *          response=204,
+    *          description="NO CONTENT",
+    *          @OA\JsonContent(ref="#/components/schemas/Todo")
+    *       ),
+    *       @OA\Response(response=400, description="Bad request"),
+    *       security={
+    *           {"api_key_security_example": {}}
+    *       }
+    *     )
+    *
+    * Returns list of projects
+    */
 
     /**
      * Remove the specified resource from storage.
